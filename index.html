@@ -1,148 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  font-family: Arial, sans-serif;
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
 
-#player {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-}
+        #player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
 
-#player iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-#player::before { /* Añade un overlay para mejorar la legibilidad del texto */
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Overlay oscuro semi-transparente */
-  z-index: 1;
-}
-
-/* Ajustes del contenido y del tamaño del texto y botones */
-#details, #welcome, .tournament-link {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2; /* Asegura que el texto esté sobre el overlay y el video */
-}
-
-#details {
-  top: 25%;
-  color: #ddd;
-  font-size: 16px; /* Tamaño fijo para móviles y ajuste en media query para pantallas mayores */
-  text-shadow: 1px 1px 2px #000;
-}
-
-#welcome {
-  top: 10%;
-  color: white;
-  font-size: 18px; /* Tamaño fijo para móviles y ajuste en media query para pantallas mayores */
-  text-shadow: 2px 2px 4px #000000;
-}
-
-.logo-wrapper {
-  width: 80px; /* Tamaño fijo para móviles y ajuste en media query para pantallas mayores */
-  height: 80px; /* Mantén la proporción */
-  top: 35%;
-}
-
-.tournament-link {
-  top: 60%;
-  font-size: 14px; /* Tamaño fijo para móviles y ajuste en media query para pantallas mayores */
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 4px #000000;
-}
-
-@media (min-width: 768px) {
-  #details, #welcome {
-    font-size: 2vw; /* Ajustes para tabletas y pantallas mayores */
-  }
-
-  .logo-wrapper {
-    background-image: url('https://i.ibb.co/mTG9cbw/logo-alixar.png'); /* Verifica que esta URL sea correcta y esté accesible */
-    background-size: contain; /* Cambio para asegurar que el logo se ajuste dentro del div */
-    background-repeat: no-repeat; /* Asegúrate de que la imagen no se repita */
-    background-position: center; /* Centra la imagen en el div */
-    border-radius: 50%;
-    width: 15vw; /* Ajuste del tamaño del logo según sea necesario */
-    height: 15vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px);
-    margin: auto;
-    position: absolute;
-    top: 45%; /* Ajuste de la posición según sea necesario */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2; /* Asegúrate de que el logo esté sobre el video */
-}
-
-  .tournament-link {
-    font-size: 1.5vw; /* Ajuste del botón para tabletas y pantallas mayores */
-    padding: 1vw 2vw;
-  }
-}
-
+        #welcome {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: white;
+            text-align: center;
+            text-shadow: 2px 2px 4px #000000; /* This will give a shadow to the text */
+        }
+           /* Estilos para el logo */
+        .logo-wrapper {
+            background-image: url('https://i.ibb.co/mTG9cbw/logo-alixar.png');
+  
+            border-radius: 50%;
+            width: 148px;
+            height: 148px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            margin: auto;
+            position: absolute;
+            top: calc(50% + 50px); /* Ajusta la posición vertical según tu diseño */
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-
     <div id="player"></div>
+    <div id="welcome">Bienvenidos a este curso 2023/24</div> <!-- Change your text here -->
+      <!-- Logo del centro -->
     <div class="logo-wrapper"></div>
-    <div id="welcome">En la Semana Cultural, el ajedrez nos enseña: como el agua, cada movimiento es vital.</div>
-    <div id="details">24 de Abril, 12:45 - 14:45 | Ritmo de juego: 5 min por jugador</div>
-
-    <a href="https://lichess.org/tournament/csEATrAm" class="tournament-link">
-        <i class="fas fa-chess-knight"></i>
-        Apúntate al torneo
-        <i class="fas fa-chess-board"></i>
-    </a>
 
     <script>
         var tag = document.createElement('script');
-        var videos = ['AdW76XukTqw', 'fmSRVczRGVA'];
+
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         var player;
         function onYouTubeIframeAPIReady() {
-            var videoId = videos[Math.floor(Math.random() * videos.length)];
             player = new YT.Player('player', {
                 height: '100%',
                 width: '100%',
-                videoId: videoId,
+                videoId: 'YnnGbcM-H8c',
                 playerVars: { 
                     'autoplay': 1, 
                     'controls': 0, 
@@ -152,7 +76,7 @@ body, html {
                     'enablejsapi': 1,
                     'mute': 1,
                     'loop': 1,
-                    'playlist': videoId
+                    'playlist': 'YnnGbcM-H8c'
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -166,4 +90,3 @@ body, html {
     </script>
 </body>
 </html>
-

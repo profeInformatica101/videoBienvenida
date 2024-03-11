@@ -1,6 +1,12 @@
+
 <!DOCTYPE html>
-<html>
+<meta charset="UTF-8">
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo de Ajedrez</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body, html {
             margin: 0;
@@ -8,86 +14,102 @@
             height: 100%;
             width: 100%;
             overflow: hidden;
+            font-family: Arial, sans-serif;
             position: relative;
+            background: #000; /* Fondo oscuro para mejorar la visibilidad del texto */
         }
 
-        #player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
+        .video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%; 
+            min-height: 100%;
+            width: auto; 
+            height: auto;
+            z-index: -100;
+            background-size: cover;
         }
 
-        #welcome {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3em;
-            color: white;
+        .content {
+            position: relative;
+            z-index: 10;
             text-align: center;
-            text-shadow: 2px 2px 4px #000000; /* This will give a shadow to the text */
+            color: white;
         }
-           /* Estilos para el logo */
+
         .logo-wrapper {
-            background-image: url('https://i.ibb.co/mTG9cbw/logo-alixar.png');
-  
+            margin: 20px auto 10px;
+            width: 80px; /* Tamaño inicial del logo */
+            height: 80px; /* Mantén la proporción */
+            background: url('https://i.ibb.co/mTG9cbw/logo-alixar.png') no-repeat center center;
+            background-size: cover;
             border-radius: 50%;
-            width: 148px;
-            height: 148px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            margin: auto;
-            position: absolute;
-            top: calc(50% + 50px); /* Ajusta la posición vertical según tu diseño */
-            left: 50%;
-            transform: translateX(-50%);
+        }
+
+        .tournament-link {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px; /* Tamaño inicial del texto del botón */
+            box-shadow: 2px 2px 4px #000;
+        }
+
+        .tournament-link:hover {
+            background-color: #0056b3;
+        }
+
+        .tournament-details {
+            margin-top: 10px;
+            font-size: 14px; /* Tamaño inicial de los detalles del torneo */
+        }
+
+        /* Ajustes para dispositivos más pequeños */
+        @media (max-width: 768px) {
+            .logo-wrapper {
+                width: 60px;
+                height: 60px;
+            }
+
+            .tournament-link, .tournament-details {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0 20px; /* Agregar algo de padding a los lados para no pegar el texto a los bordes */
+            }
+
+            .logo-wrapper {
+                width: 50px;
+                height: 50px;
+            }
+
+            .tournament-link, .tournament-details {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="player"></div>
-    <div id="welcome">Bienvenidos a este curso 2023/24</div> <!-- Change your text here -->
-      <!-- Logo del centro -->
+
+<div class="video-background">
+    <iframe src="https://www.youtube.com/embed/AdW76XukTqw?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=AdW76XukTqw&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<div class="content">
     <div class="logo-wrapper"></div>
+    <h1>En la Semana Cultural, el ajedrez nos enseña: como el agua, cada movimiento es vital.</h1>
+    <a href="https://lichess.org/tournament/csEATrAm" class="tournament-link">
+        <i class="fas fa-chess-knight"></i> Apúntate al torneo <i class="fas fa-chess-board"></i>
+    </a>
+    <p class="tournament-details">24 de Abril, 12:45 - 14:45 | Ritmo de juego: 5 min por jugador</p>
+</div>
 
-    <script>
-        var tag = document.createElement('script');
-
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'YnnGbcM-H8c',
-                playerVars: { 
-                    'autoplay': 1, 
-                    'controls': 0, 
-                    'autohide': 1,
-                    'wmode': 'opaque', 
-                    'disablekb': 1,
-                    'enablejsapi': 1,
-                    'mute': 1,
-                    'loop': 1,
-                    'playlist': 'YnnGbcM-H8c'
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
-    </script>
 </body>
 </html>
-

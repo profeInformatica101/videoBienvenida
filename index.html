@@ -1,92 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DAW1 · IES Camas 25/26 · Intro</title>
+<style>
+  /* ===== Fondo vídeo ===== */
+  #player{position:fixed; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none;}
 
-        #player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-        }
+  /* ===== Tipografías de énfasis ===== */
+  @font-face{font-family:"JetMono"; src: local("JetBrains Mono"), local("JetBrainsMono");}
+  @font-face{font-family:"Inter"; src: local("Inter");}
 
-        #welcome {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3em;
-            color: white;
-            text-align: center;
-            text-shadow: 2px 2px 4px #000000; /* This will give a shadow to the text */
-        }
-           /* Estilos para el logo */
-        .logo-wrapper {
-            background-image: url('https://i.ibb.co/mTG9cbw/logo-alixar.png');
-  
-            border-radius: 50%;
-            width: 148px;
-            height: 148px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            margin: auto;
-            position: absolute;
-            top: calc(50% + 50px); /* Ajusta la posición vertical según tu diseño */
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
+  :root{
+    --duration: 95s;         /* velocidad inicial del crawl (más alta = más lento) */
+    --size: clamp(1.05rem, 2.4vw, 2rem);
+    --yellow: #ffeb3b;
+    --blue:   #80d8ff;
+    --green:  #b2ff59;
+    --pink:   #ff80ab;
+    --orange: #ffcc80;
+    --kw-font: "JetMono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --body-font: "Inter", system-ui, Arial, sans-serif;
+  }
+
+  /* ===== Cinta Star Wars ===== */
+  .star-wars{
+    position:absolute; inset:0; overflow:hidden;
+    perspective: 700px;
+    color: var(--yellow);
+    text-shadow: 2px 2px 8px #000;
+    font-family: var(--body-font);
+    line-height: 1.6;
+  }
+  .crawl{
+    position:relative; top:100%;
+    transform-origin: 50% 100%;
+    animation: crawl var(--duration) linear infinite;
+  }
+  @keyframes crawl{
+    0%   { top:100%;   transform: rotateX(18deg) translateZ(0); }
+    100% { top:-1200%; transform: rotateX(24deg) translateZ(-2100px); }
+  }
+  .content{
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 1rem;
+    font-size: var(--size);
+    font-weight: 700;
+  }
+  .content p{margin: .9rem 0;}
+
+  /* ===== Palabras clave (color + fuente) ===== */
+  .kw   { color: var(--yellow); font-family: var(--kw-font); }
+  .it   { color: var(--blue);   font-family: var(--kw-font); }
+  .ot   { color: var(--green);  font-family: var(--kw-font); }
+  .tool { color: var(--pink);   font-family: var(--kw-font); }
+  .hist { color: var(--orange); font-family: var(--kw-font); }
+
+  /* ===== Controles accesibles ===== */
+  .controls{
+    position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%);
+    display: flex; gap: .5rem; z-index: 3; flex-wrap: wrap;
+  }
+  .controls button{
+    border: 0; padding: .55rem .8rem; border-radius: .7rem; cursor: pointer;
+    background: #ffffffcc; backdrop-filter: blur(4px);
+    font-weight: 700;
+  }
+  .badge{
+    position: fixed; right: 1rem; top: 1rem; z-index: 3;
+    background:#00000080; color:#fff; padding:.35rem .6rem; border-radius:.5rem; font-size:.9rem;
+  }
+</style>
 </head>
 <body>
-    <div id="player"></div>
-    <div id="welcome">Bienvenidos a este curso 2023/24</div> <!-- Change your text here -->
-      <!-- Logo del centro -->
-    <div class="logo-wrapper"></div>
+  <!-- Fondo con vídeo de YouTube (silenciado para permitir autoplay) -->
+  <div id="player"></div>
 
-    <script>
-        var tag = document.createElement('script');
+  <!-- Distintivo -->
+  <div class="badge">IES Camas · DAW1 · 2025/26</div>
 
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  <!-- Controles pedagógicos -->
+  <div class="controls" aria-label="Controles de lectura">
+    <button id="slower">⏪ Más lento</button>
+    <button id="pause">⏸️ Pausa</button>
+    <button id="play" disabled>▶️ Seguir</button>
+    <button id="faster">⏩ Más rápido</button>
+  </div>
 
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '100%',
-                width: '100%',
-                videoId: 'YnnGbcM-H8c',
-                playerVars: { 
-                    'autoplay': 1, 
-                    'controls': 0, 
-                    'autohide': 1,
-                    'wmode': 'opaque', 
-                    'disablekb': 1,
-                    'enablejsapi': 1,
-                    'mute': 1,
-                    'loop': 1,
-                    'playlist': 'YnnGbcM-H8c'
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                }
-            });
-        }
+  <!-- Cinta de texto con ~7× contenido -->
+  <section class="star-wars" aria-label="Introducción a Digitalización y Entornos de Desarrollo">
+    <div class="crawl" id="crawl">
+      <div class="content">
+        <!-- BLOQUE 1 · Puesta en contexto -->
+        <p>Bienvenidas y bienvenidos a <b>DAW1</b> en el <b>IES Camas</b>, curso <b>2025/26</b>. Empezamos un viaje desde la <span class="hist">IBM de tarjetas perforadas</span> hasta las <span class="kw">plataformas en la nube</span> y la <span class="kw">IA generativa</span>.</p>
+        <p>Antes de los portátiles, la nube y las APIs, la información vivía en <span class="hist">tarjetas perforadas</span>. Cada agujero representaba un bit; cada caja, un programa. Hoy trabajaremos con <span class="kw">Git</span>, <span class="tool">Maven</span>, <span class="tool">Docker</span> y despliegues en <span class="kw">PaaS</span>, pero los fundamentos son los mismos: <b>precisión, método y colaboración</b>.</p>
 
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
-    </script>
+        <!-- BLOQUE 2 · Digitalización (RA 1 · MP 1665) -->
+        <p><span class="kw">Digitalización</span> significa convertir procesos analógicos en procesos <b>conectados, medibles y mejorables</b>. No es solo usar ordenadores: es rediseñar cómo trabaja la empresa.</p>
+        <p>En negocio distinguimos dos mundos que cooperan: <span class="it">IT</span> (<i>Information Technology</i>) y <span class="ot">OT</span> (<i>Operation Technology</i>). <span class="it">IT</span> gestiona <b>aplicaciones, datos, redes, ciberseguridad</b>. <span class="ot">OT</span> controla <b>máquinas, sensores, robots y PLCs</b> en planta.</p>
+        <p>La conexión <span class="it">IT</span> ↔ <span class="ot">OT</span> permite <b>datos en tiempo real</b>, <b>trazabilidad</b> y <b>optimización</b>. Es el corazón de la <span class="kw">Industria 4.0</span> y de los <span class="kw">sistemas ciberfísicos</span>.</p>
+        <p>Beneficios de digitalizar de extremo a extremo: <b>eficiencia de costes</b>, <b>toma de decisiones con datos</b>, <b>nuevos canales con clientes y proveedores</b>, <b>sostenibilidad</b> y <b>conciliación</b> gracias al trabajo híbrido.</p>
+
+        <!-- BLOQUE 3 · Cronología breve y elementos -->
+        <p><span class="hist">1ª Revolución</span>: vapor y mecanización. <span class="hist">2ª</span>: electricidad y producción en masa. <span class="hist">3ª</span>: electrónica e informática. <span class="hist">4ª</span>: <b>digitalización</b>, <span class="kw">IoT</span>, <span class="kw">Cloud</span>, <span class="kw">IA</span>, <span class="kw">Big Data</span> y <span class="kw">automatización</span>.</p>
+        <p>Hoy trabajamos con <span class="kw">datos</span> como activo. Sensores <span class="ot">OT</span> generan eventos; <span class="it">IT</span> los ingiere vía <span class="tool">APIs</span>, los almacena en <span class="tool">BBDD</span> y los analiza con <span class="tool">ETL</span> y <span class="kw">analítica</span>.</p>
+
+        <!-- BLOQUE 4 · Estructura de empresa y unidades digitalizadas -->
+        <p>Una empresa digitaliza su <b>organización</b>, <b>recursos</b> y <b>planificación</b>. Esto implica: procesos definidos, tableros Kanban, <span class="tool">ERP/CRM</span>, <span class="tool">BPM</span>, flujos de aprobación y métricas.</p>
+        <p>Departamentos típicos <span class="it">IT</span>: <b>Desarrollo</b>, <b>Explotación</b>, <b>Soporte</b>, <b>Seguridad</b>, <b>Datos</b>. En <span class="ot">OT</span>: <b>Mantenimiento</b>, <b>Producción</b>, <b>Calidad</b>, <b>Logística</b>.</p>
+
+        <!-- BLOQUE 5 · Entornos de desarrollo (MP 0487) -->
+        <p>Un <b>programa</b> nace como <span class="kw">código fuente</span>, pasa a <span class="kw">código objeto</span> y termina en <span class="kw">ejecutable</span>. A veces generamos <span class="kw">bytecode</span> para una <b>máquina virtual</b> (JVM, .NET) y otras compilamos nativo.</p>
+        <p>Fases del desarrollo: <b>análisis</b>, <b>diseño</b>, <b>codificación</b>, <b>pruebas</b>, <b>documentación</b>, <b>despliegue</b> y <b>mantenimiento</b>. Repetimos el ciclo con <span class="kw">mejora continua</span>.</p>
+        <p>Paradigmas: <b>imperativo</b>, <b>OO</b>, <b>funcional</b>, <b>declarativo</b>. Lenguajes que verás: <span class="tool">Java</span>, <span class="tool">Python</span>, <span class="tool">SQL</span>, <span class="tool">JavaScript</span>. Cada uno resuelve problemas distintos.</p>
+        <p>Herramientas clave: <span class="tool">Git</span> (versionado), <span class="tool">Maven/Gradle</span> (build), <span class="tool">JUnit</span> (pruebas), <span class="tool">Docker</span> (contenedores), <span class="tool">CI/CD</span> (automatización), <span class="tool">IDE</span> (productividad).</p>
+        <p>Metodologías ágiles: <b>Scrum</b>, <b>Kanban</b>. Sprints, retrospectivas, historias de usuario, <span class="kw">DevOps</span> para unir desarrollo y operaciones.</p>
+
+        <!-- BLOQUE 6 · IT vs OT con ejemplos concretos -->
+        <p>Ejemplo <span class="ot">OT</span>: una línea de producción con sensores envía métricas a un <span class="tool">broker</span>. Ejemplo <span class="it">IT</span>: una app de ventas consulta el stock en tiempo real. La <b>integración</b> se hace con <span class="tool">APIs</span>, <span class="tool">ETL</span> y <span class="tool">mensajería</span>.</p>
+        <p>La unión <span class="it">IT</span>–<span class="ot">OT</span> habilita <b>mantenimiento predictivo</b>, <b>gemelos digitales</b> y <b>tableros de control</b> para decidir con datos.</p>
+
+        <!-- BLOQUE 7 · Sostenibilidad y personas -->
+        <p>La <span class="kw">digitalización</span> también reduce desperdicios, energía y desplazamientos. Mejora la <b>seguridad</b> y permite conciliar mejor. La tecnología está al servicio de las personas.</p>
+
+        <!-- BLOQUE 8 · Conexión histórica con el vídeo -->
+        <p>La <span class="hist">IBM de tarjetas</span> nos recuerda que todo empezó con <b>precisión</b> y <b>paciencia</b>. Hoy esas virtudes se transforman en <span class="kw">pruebas automáticas</span>, <span class="kw">pipelines</span> y <span class="kw">observabilidad</span>.</p>
+
+        <!-- BLOQUE 9 · Qué haréis este curso -->
+        <p>En <b>Entornos de Desarrollo</b> montarás tu <span class="tool">stack</span>: <span class="tool">JDK</span> + <span class="tool">Maven</span> + <span class="tool">JUnit</span> + <span class="tool">Git/GitHub</span> + <span class="tool">Docker</span>. Aprenderás a compilar, testear, empacar y desplegar.</p>
+        <p>En <b>Digitalización</b> analizarás un proceso real, identificarás <span class="it">IT</span> y <span class="ot">OT</span>, seleccionarás tecnologías y justificarás beneficios: <b>coste</b>, <b>datos</b>, <b>sostenibilidad</b>, <b>comunicación</b>.</p>
+
+        <!-- BLOQUE 10 · Cierre motivacional -->
+        <p>La tecnología evoluciona, los fundamentos perduran. Empecemos el viaje: <b>DAW1 · IES Camas · 2025/26</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- API de YouTube -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let player, animRunning = true;
+    function onYouTubeIframeAPIReady(){
+      player = new YT.Player('player', {
+        videoId: 'YnnGbcM-H8c', // perforadora IBM
+        playerVars: {autoplay:1, controls:0, modestbranding:1, showinfo:0, loop:1, playlist:'YnnGbcM-H8c', mute:1, playsinline:1},
+        events: { onReady: e => e.target.playVideo() }
+      });
+    }
+
+    // === Controles de lectura ===
+    const crawlEl = document.getElementById('crawl');
+    const root = document.documentElement.style;
+    const btnSlower = document.getElementById('slower');
+    const btnFaster = document.getElementById('faster');
+    const btnPause  = document.getElementById('pause');
+    const btnPlay   = document.getElementById('play');
+
+    // lee y escribe la duración actual de la animación (CSS var --duration)
+    const getDuration = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration')) || 95;
+    const setDuration = (s) => root.setProperty('--duration', s + 's');
+
+    btnSlower.addEventListener('click', () => {
+      const d = Math.min(getDuration() + 15, 240); // límite superior
+      setDuration(d);
+    });
+    btnFaster.addEventListener('click', () => {
+      const d = Math.max(getDuration() - 15, 30);  // límite inferior
+      setDuration(d);
+    });
+    btnPause.addEventListener('click', () => {
+      crawlEl.style.animationPlayState = 'paused';
+      animRunning = false; btnPause.disabled = true; btnPlay.disabled = false;
+    });
+    btnPlay.addEventListener('click', () => {
+      crawlEl.style.animationPlayState = 'running';
+      animRunning = true; btnPlay.disabled = true; btnPause.disabled = false;
+    });
+
+    // accesibilidad: barra espaciadora pausa/continúa
+    document.addEventListener('keydown', (e)=>{
+      if(e.code === 'Space'){
+        e.preventDefault();
+        (animRunning ? btnPause : btnPlay).click();
+      }
+    });
+  </script>
 </body>
 </html>

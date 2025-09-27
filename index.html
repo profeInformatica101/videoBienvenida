@@ -71,7 +71,7 @@
   }
   .badge{
     position: fixed; right: 1rem; top: 1rem; z-index: 3;
-    background:#00000080; color:#fff; padding:.35rem .6rem; border-radius:.5rem; font-size:.9rem;
+    background:#000000b0; color:#fff; padding:.35rem .6rem; border-radius:.5rem; font-size:.9rem;
   }
 </style>
 </head>
@@ -79,8 +79,8 @@
   <!-- Fondo con vídeo de YouTube (silenciado para permitir autoplay) -->
   <div id="player"></div>
 
-  <!-- Distintivo -->
-  <div class="badge">IES Camas · DAW1 · 2025/26</div>
+  <!-- Distintivo (incluye la Ñ como guiño a lenguaje y lectura) -->
+  <div class="badge">IES Camas · DAW1 · 2025/26 · Ñ</div>
 
   <!-- Controles pedagógicos -->
   <div class="controls" aria-label="Controles de lectura">
@@ -90,51 +90,30 @@
     <button id="faster">⏩ Más rápido</button>
   </div>
 
-  <!-- Cinta de texto con ~7× contenido -->
-  <section class="star-wars" aria-label="Introducción a Digitalización y Entornos de Desarrollo">
+  <!-- Cinta de texto -->
+  <section class="star-wars" aria-label="Historia técnica y conexión con los módulos">
     <div class="crawl" id="crawl">
       <div class="content">
-        <!-- BLOQUE 1 · Puesta en contexto -->
-        <p>Bienvenidas y bienvenidos a <b>DAW1</b> en el <b>IES Camas</b>, curso <b>2025/26</b>. Empezamos un viaje desde la <span class="hist">IBM de tarjetas perforadas</span> hasta las <span class="kw">plataformas en la nube</span> y la <span class="kw">IA generativa</span>.</p>
-        <p>Antes de los portátiles, la nube y las APIs, la información vivía en <span class="hist">tarjetas perforadas</span>. Cada agujero representaba un bit; cada caja, un programa. Hoy trabajaremos con <span class="kw">Git</span>, <span class="tool">Maven</span>, <span class="tool">Docker</span> y despliegues en <span class="kw">PaaS</span>, pero los fundamentos son los mismos: <b>precisión, método y colaboración</b>.</p>
 
-        <!-- BLOQUE 2 · Digitalización (RA 1 · MP 1665) -->
-        <p><span class="kw">Digitalización</span> significa convertir procesos analógicos en procesos <b>conectados, medibles y mejorables</b>. No es solo usar ordenadores: es rediseñar cómo trabaja la empresa.</p>
-        <p>En negocio distinguimos dos mundos que cooperan: <span class="it">IT</span> (<i>Information Technology</i>) y <span class="ot">OT</span> (<i>Operation Technology</i>). <span class="it">IT</span> gestiona <b>aplicaciones, datos, redes, ciberseguridad</b>. <span class="ot">OT</span> controla <b>máquinas, sensores, robots y PLCs</b> en planta.</p>
-        <p>La conexión <span class="it">IT</span> ↔ <span class="ot">OT</span> permite <b>datos en tiempo real</b>, <b>trazabilidad</b> y <b>optimización</b>. Es el corazón de la <span class="kw">Industria 4.0</span> y de los <span class="kw">sistemas ciberfísicos</span>.</p>
-        <p>Beneficios de digitalizar de extremo a extremo: <b>eficiencia de costes</b>, <b>toma de decisiones con datos</b>, <b>nuevos canales con clientes y proveedores</b>, <b>sostenibilidad</b> y <b>conciliación</b> gracias al trabajo híbrido.</p>
+        <!-- BLOQUE A · La máquina del vídeo (dato técnico veraz) -->
+        <p>Lo que se observa en el vídeo es una <span class="hist">perforadora IBM Type 029</span> (familia de los años 60), sucesora de la 026. Su función es **capturar datos** en <span class="hist">tarjetas perforadas</span> estándar de **80 columnas** (formato IBM de 1928) mediante teclado mecánico.</p>
+        <p>Cada <span class="hist">columna</span> de la tarjeta representa **un carácter**. La perforación se hace en **filas** numeradas (12, 11, 0–9) con combinaciones que codifican letras, cifras y signos (códigos Hollerith/BCD, antecesores de <span class="kw">EBCDIC</span>). La 029 **imprime la leyenda** sobre la tarjeta para verificación humana y puede trabajar con flujos de tarjetas a **decenas por minuto** según destreza de la operadora.</p>
+        <p>El ciclo de trabajo clásico era: <span class="tool">029 (entrada)</span> → <span class="tool">verificadora 059</span> → <span class="tool">lector</span> → <span class="tool">tabulador/ordenador</span>. El soporte físico limita la **capacidad** (≈80 caracteres por tarjeta) y exige **precisión** y **procedimiento**. Estos principios siguen vigentes en la ingeniería de software moderna.</p>
 
-        <!-- BLOQUE 3 · Cronología breve y elementos -->
-        <p><span class="hist">1ª Revolución</span>: vapor y mecanización. <span class="hist">2ª</span>: electricidad y producción en masa. <span class="hist">3ª</span>: electrónica e informática. <span class="hist">4ª</span>: <b>digitalización</b>, <span class="kw">IoT</span>, <span class="kw">Cloud</span>, <span class="kw">IA</span>, <span class="kw">Big Data</span> y <span class="kw">automatización</span>.</p>
-        <p>Hoy trabajamos con <span class="kw">datos</span> como activo. Sensores <span class="ot">OT</span> generan eventos; <span class="it">IT</span> los ingiere vía <span class="tool">APIs</span>, los almacena en <span class="tool">BBDD</span> y los analiza con <span class="tool">ETL</span> y <span class="kw">analítica</span>.</p>
+        <!-- BLOQUE B · Conexión con Digitalización (MP 1665) -->
+        <p>En <span class="kw">digitalización</span>, pasamos de soportes físicos a <b>datos conectados</b>. Separar los ámbitos <span class="it">IT</span> (aplicaciones, datos, ciberseguridad) y <span class="ot">OT</span> (máquinas, sensores, PLC) nos permite diseñar soluciones que integran planta y negocio con <span class="tool">APIs</span>, <span class="tool">mensajería</span> y <span class="tool">ETL</span>.</p>
+        <p>Una cadena moderna sustituye las tarjetas por <span class="kw">streams de eventos</span>, almacenes <span class="tool">BBDD</span>/<span class="tool">Data Lake</span> y análisis con <span class="kw">IA</span>. Resultado: **trazabilidad**, **decisiones con datos** y **eficiencia**.</p>
 
-        <!-- BLOQUE 4 · Estructura de empresa y unidades digitalizadas -->
-        <p>Una empresa digitaliza su <b>organización</b>, <b>recursos</b> y <b>planificación</b>. Esto implica: procesos definidos, tableros Kanban, <span class="tool">ERP/CRM</span>, <span class="tool">BPM</span>, flujos de aprobación y métricas.</p>
-        <p>Departamentos típicos <span class="it">IT</span>: <b>Desarrollo</b>, <b>Explotación</b>, <b>Soporte</b>, <b>Seguridad</b>, <b>Datos</b>. En <span class="ot">OT</span>: <b>Mantenimiento</b>, <b>Producción</b>, <b>Calidad</b>, <b>Logística</b>.</p>
+        <!-- BLOQUE C · Entornos de Desarrollo (MP 0487) -->
+        <p>De la 029 aprendemos **flujo y control de calidad**. En software: <span class="tool">Git</span> (versionado), <span class="tool">Maven/Gradle</span> (build), <span class="tool">JUnit</span> (pruebas), <span class="tool">CI/CD</span> (automatización) y <span class="tool">Docker</span> (entornos reproducibles). El código transita de <span class="kw">fuente</span> a <span class="kw">objeto</span> y <span class="kw">ejecutable</span> o <span class="kw">bytecode</span> (JVM/.NET).</p>
+        <p>La comparación justa: una tarjeta (80 car.) vs. una solicitud moderna a una <span class="tool">API REST</span> con <span class="kw">JSON</span> de kilobytes, procesada en milisegundos y persistida con garantías ACID o eventos idempotentes. Mismo objetivo: **datos correctos** en el **lugar correcto**.</p>
 
-        <!-- BLOQUE 5 · Entornos de desarrollo (MP 0487) -->
-        <p>Un <b>programa</b> nace como <span class="kw">código fuente</span>, pasa a <span class="kw">código objeto</span> y termina en <span class="kw">ejecutable</span>. A veces generamos <span class="kw">bytecode</span> para una <b>máquina virtual</b> (JVM, .NET) y otras compilamos nativo.</p>
-        <p>Fases del desarrollo: <b>análisis</b>, <b>diseño</b>, <b>codificación</b>, <b>pruebas</b>, <b>documentación</b>, <b>despliegue</b> y <b>mantenimiento</b>. Repetimos el ciclo con <span class="kw">mejora continua</span>.</p>
-        <p>Paradigmas: <b>imperativo</b>, <b>OO</b>, <b>funcional</b>, <b>declarativo</b>. Lenguajes que verás: <span class="tool">Java</span>, <span class="tool">Python</span>, <span class="tool">SQL</span>, <span class="tool">JavaScript</span>. Cada uno resuelve problemas distintos.</p>
-        <p>Herramientas clave: <span class="tool">Git</span> (versionado), <span class="tool">Maven/Gradle</span> (build), <span class="tool">JUnit</span> (pruebas), <span class="tool">Docker</span> (contenedores), <span class="tool">CI/CD</span> (automatización), <span class="tool">IDE</span> (productividad).</p>
-        <p>Metodologías ágiles: <b>Scrum</b>, <b>Kanban</b>. Sprints, retrospectivas, historias de usuario, <span class="kw">DevOps</span> para unir desarrollo y operaciones.</p>
+        <!-- BLOQUE D · IA–Humano y oficio -->
+        <p>Hoy la colaboración <span class="kw">IA–Humano</span> (por ejemplo, asistentes tipo ChatGPT integrados en el flujo) acelera tareas: especificaciones, pruebas, documentación. La exigencia profesional no cambia: **criterio**, **verificación** y **ética** en el uso de datos.</p>
 
-        <!-- BLOQUE 6 · IT vs OT con ejemplos concretos -->
-        <p>Ejemplo <span class="ot">OT</span>: una línea de producción con sensores envía métricas a un <span class="tool">broker</span>. Ejemplo <span class="it">IT</span>: una app de ventas consulta el stock en tiempo real. La <b>integración</b> se hace con <span class="tool">APIs</span>, <span class="tool">ETL</span> y <span class="tool">mensajería</span>.</p>
-        <p>La unión <span class="it">IT</span>–<span class="ot">OT</span> habilita <b>mantenimiento predictivo</b>, <b>gemelos digitales</b> y <b>tableros de control</b> para decidir con datos.</p>
+        <!-- BLOQUE E · Pista para la lectura -->
+        <p>Consejo didáctico: usa los botones **Pausa/Seguir** y **Más lento/Más rápido** abajo para ajustar el ritmo de lectura del texto sobre el vídeo.</p>
 
-        <!-- BLOQUE 7 · Sostenibilidad y personas -->
-        <p>La <span class="kw">digitalización</span> también reduce desperdicios, energía y desplazamientos. Mejora la <b>seguridad</b> y permite conciliar mejor. La tecnología está al servicio de las personas.</p>
-
-        <!-- BLOQUE 8 · Conexión histórica con el vídeo -->
-        <p>La <span class="hist">IBM de tarjetas</span> nos recuerda que todo empezó con <b>precisión</b> y <b>paciencia</b>. Hoy esas virtudes se transforman en <span class="kw">pruebas automáticas</span>, <span class="kw">pipelines</span> y <span class="kw">observabilidad</span>.</p>
-
-        <!-- BLOQUE 9 · Qué haréis este curso -->
-        <p>En <b>Entornos de Desarrollo</b> montarás tu <span class="tool">stack</span>: <span class="tool">JDK</span> + <span class="tool">Maven</span> + <span class="tool">JUnit</span> + <span class="tool">Git/GitHub</span> + <span class="tool">Docker</span>. Aprenderás a compilar, testear, empacar y desplegar.</p>
-        <p>En <b>Digitalización</b> analizarás un proceso real, identificarás <span class="it">IT</span> y <span class="ot">OT</span>, seleccionarás tecnologías y justificarás beneficios: <b>coste</b>, <b>datos</b>, <b>sostenibilidad</b>, <b>comunicación</b>.</p>
-
-        <!-- BLOQUE 10 · Cierre motivacional -->
-        <p>La tecnología evoluciona, los fundamentos perduran. Empecemos el viaje: <b>DAW1 · IES Camas · 2025/26</b>.</p>
       </div>
     </div>
   </section>
@@ -145,8 +124,8 @@
     let player, animRunning = true;
     function onYouTubeIframeAPIReady(){
       player = new YT.Player('player', {
-        videoId: 'YnnGbcM-H8c', // perforadora IBM
-        playerVars: {autoplay:1, controls:0, modestbranding:1, showinfo:0, loop:1, playlist:'YnnGbcM-H8c', mute:1, playsinline:1},
+        videoId: 'YnnGbcM-H8c', // demostración de keypunch IBM
+        playerVars: {autoplay:1, controls:0, modestbranding:1, loop:1, playlist:'YnnGbcM-H8c', mute:1, playsinline:1},
         events: { onReady: e => e.target.playVideo() }
       });
     }
@@ -159,18 +138,11 @@
     const btnPause  = document.getElementById('pause');
     const btnPlay   = document.getElementById('play');
 
-    // lee y escribe la duración actual de la animación (CSS var --duration)
     const getDuration = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration')) || 95;
     const setDuration = (s) => root.setProperty('--duration', s + 's');
 
-    btnSlower.addEventListener('click', () => {
-      const d = Math.min(getDuration() + 15, 240); // límite superior
-      setDuration(d);
-    });
-    btnFaster.addEventListener('click', () => {
-      const d = Math.max(getDuration() - 15, 30);  // límite inferior
-      setDuration(d);
-    });
+    btnSlower.addEventListener('click', () => setDuration(Math.min(getDuration() + 15, 240)));
+    btnFaster.addEventListener('click', () => setDuration(Math.max(getDuration() - 15, 30)));
     btnPause.addEventListener('click', () => {
       crawlEl.style.animationPlayState = 'paused';
       animRunning = false; btnPause.disabled = true; btnPlay.disabled = false;
@@ -179,8 +151,6 @@
       crawlEl.style.animationPlayState = 'running';
       animRunning = true; btnPlay.disabled = true; btnPause.disabled = false;
     });
-
-    // accesibilidad: barra espaciadora pausa/continúa
     document.addEventListener('keydown', (e)=>{
       if(e.code === 'Space'){
         e.preventDefault();

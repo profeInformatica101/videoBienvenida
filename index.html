@@ -5,8 +5,26 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>DAW1 · IES Camas 25/26 · Intro</title>
 <style>
+  /* ===== Reset básico para fondo negro y altura completa ===== */
+  html, body { height: 100%; background:#000; margin:0; }
+
   /* ===== Fondo vídeo ===== */
-  #player{position:fixed; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none;}
+  #player{
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;           /* antes: -1 (no se veía) */
+    pointer-events: none; /* que no capture clics */
+  }
+  /* Fuerza el iframe generado por la API a ocupar todo */
+  #player iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+  }
 
   /* ===== Tipografías de énfasis ===== */
   @font-face{font-family:"JetMono"; src: local("JetBrains Mono"), local("JetBrainsMono");}
@@ -32,6 +50,8 @@
     text-shadow: 2px 2px 8px #000;
     font-family: var(--body-font);
     line-height: 1.6;
+    z-index: 1; /* por encima del vídeo */
+    pointer-events:none; /* para que los controles sigan clicables */
   }
   .crawl{
     position:relative; top:100%;
@@ -62,7 +82,7 @@
   /* ===== Controles accesibles ===== */
   .controls{
     position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%);
-    display: flex; gap: .5rem; z-index: 3; flex-wrap: wrap;
+    display: flex; gap: .5rem; z-index: 2; flex-wrap: wrap; /* sobre el texto */
   }
   .controls button{
     border: 0; padding: .55rem .8rem; border-radius: .7rem; cursor: pointer;
@@ -70,7 +90,7 @@
     font-weight: 700;
   }
   .badge{
-    position: fixed; right: 1rem; top: 1rem; z-index: 3;
+    position: fixed; right: 1rem; top: 1rem; z-index: 2;
     background:#000000b0; color:#fff; padding:.35rem .6rem; border-radius:.5rem; font-size:.9rem;
   }
 </style>
@@ -79,7 +99,7 @@
   <!-- Fondo con vídeo de YouTube (silenciado para permitir autoplay) -->
   <div id="player"></div>
 
-  <!-- Distintivo (incluye la Ñ como guiño a lenguaje y lectura) -->
+  <!-- Distintivo -->
   <div class="badge">IES Camas · DAW1 · 2025/26 · Ñ</div>
 
   <!-- Controles pedagógicos -->
@@ -94,26 +114,26 @@
   <section class="star-wars" aria-label="Historia técnica y conexión con los módulos">
     <div class="crawl" id="crawl">
       <div class="content">
-
+   <p>  <mark>Consejo didáctico: usa los botones <b>Pausa/Seguir</b> y <b>Más lento/Más rápido</b> abajo para ajustar el ritmo de lectura del texto sobre el vídeo.</mark></p>
+<br><br>
         <!-- BLOQUE A · La máquina del vídeo (dato técnico veraz) -->
-        <p>Lo que se observa en el vídeo es una <span class="hist">perforadora IBM Type 029</span> (familia de los años 60), sucesora de la 026. Su función es **capturar datos** en <span class="hist">tarjetas perforadas</span> estándar de **80 columnas** (formato IBM de 1928) mediante teclado mecánico.</p>
-        <p>Cada <span class="hist">columna</span> de la tarjeta representa **un carácter**. La perforación se hace en **filas** numeradas (12, 11, 0–9) con combinaciones que codifican letras, cifras y signos (códigos Hollerith/BCD, antecesores de <span class="kw">EBCDIC</span>). La 029 **imprime la leyenda** sobre la tarjeta para verificación humana y puede trabajar con flujos de tarjetas a **decenas por minuto** según destreza de la operadora.</p>
-        <p>El ciclo de trabajo clásico era: <span class="tool">029 (entrada)</span> → <span class="tool">verificadora 059</span> → <span class="tool">lector</span> → <span class="tool">tabulador/ordenador</span>. El soporte físico limita la **capacidad** (≈80 caracteres por tarjeta) y exige **precisión** y **procedimiento**. Estos principios siguen vigentes en la ingeniería de software moderna.</p>
+        <p>Lo que se observa en el vídeo es una <span class="hist">perforadora IBM Type 029</span> (familia de los años 60), sucesora de la 026. Su función es <b>capturar datos</b> en <span class="hist">tarjetas perforadas</span> estándar de <b>80 columnas</b> (formato IBM de 1928) mediante teclado mecánico.</p>
+        <p>Cada <span class="hist">columna</span> de la tarjeta representa <b>un carácter</b>. La perforación se hace en <b>filas</b> numeradas (12, 11, 0–9) con combinaciones que codifican letras, cifras y signos (códigos Hollerith/BCD, antecesores de <span class="kw">EBCDIC</span>). La 029 <b>imprime la leyenda</b> sobre la tarjeta para verificación humana y puede trabajar con flujos de tarjetas a <b>decenas por minuto</b> según destreza de la operadora.</p>
+        <p>El ciclo de trabajo clásico era: <span class="tool">029 (entrada)</span> → <span class="tool">verificadora 059</span> → <span class="tool">lector</span> → <span class="tool">tabulador/ordenador</span>. El soporte físico limita la <b>capacidad</b> (≈80 caracteres por tarjeta) y exige <b>precisión</b> y <b>procedimiento</b>. Estos principios siguen vigentes en la ingeniería de software moderna.</p>
 
         <!-- BLOQUE B · Conexión con Digitalización (MP 1665) -->
         <p>En <span class="kw">digitalización</span>, pasamos de soportes físicos a <b>datos conectados</b>. Separar los ámbitos <span class="it">IT</span> (aplicaciones, datos, ciberseguridad) y <span class="ot">OT</span> (máquinas, sensores, PLC) nos permite diseñar soluciones que integran planta y negocio con <span class="tool">APIs</span>, <span class="tool">mensajería</span> y <span class="tool">ETL</span>.</p>
-        <p>Una cadena moderna sustituye las tarjetas por <span class="kw">streams de eventos</span>, almacenes <span class="tool">BBDD</span>/<span class="tool">Data Lake</span> y análisis con <span class="kw">IA</span>. Resultado: **trazabilidad**, **decisiones con datos** y **eficiencia**.</p>
+        <p>Una cadena moderna sustituye las tarjetas por <span class="kw">streams de eventos</span>, almacenes <span class="tool">BBDD</span>/<span class="tool">Data Lake</span> y análisis con <span class="kw">IA</span>. Resultado: <b>trazabilidad</b>, <b>decisiones con datos</b> y <b>eficiencia</b>.</p>
 
         <!-- BLOQUE C · Entornos de Desarrollo (MP 0487) -->
-        <p>De la 029 aprendemos **flujo y control de calidad**. En software: <span class="tool">Git</span> (versionado), <span class="tool">Maven/Gradle</span> (build), <span class="tool">JUnit</span> (pruebas), <span class="tool">CI/CD</span> (automatización) y <span class="tool">Docker</span> (entornos reproducibles). El código transita de <span class="kw">fuente</span> a <span class="kw">objeto</span> y <span class="kw">ejecutable</span> o <span class="kw">bytecode</span> (JVM/.NET).</p>
-        <p>La comparación justa: una tarjeta (80 car.) vs. una solicitud moderna a una <span class="tool">API REST</span> con <span class="kw">JSON</span> de kilobytes, procesada en milisegundos y persistida con garantías ACID o eventos idempotentes. Mismo objetivo: **datos correctos** en el **lugar correcto**.</p>
+        <p>De la 029 aprendemos <b>flujo y control de calidad</b>. En software: <span class="tool">Git</span> (versionado), <span class="tool">Maven/Gradle</span> (build), <span class="tool">JUnit</span> (pruebas), <span class="tool">CI/CD</span> (automatización) y <span class="tool">Docker</span> (entornos reproducibles). El código transita de <span class="kw">fuente</span> a <span class="kw">objeto</span> y <span class="kw">ejecutable</span> o <span class="kw">bytecode</span> (JVM/.NET).</p>
+        <p>La comparación justa: una tarjeta (80 car.) vs. una solicitud moderna a una <span class="tool">API REST</span> con <span class="kw">JSON</span> de kilobytes, procesada en milisegundos y persistida con garantías ACID o eventos idempotentes. Mismo objetivo: <b>datos correctos</b> en el <b>lugar correcto</b>.</p>
 
         <!-- BLOQUE D · IA–Humano y oficio -->
-        <p>Hoy la colaboración <span class="kw">IA–Humano</span> (por ejemplo, asistentes tipo ChatGPT integrados en el flujo) acelera tareas: especificaciones, pruebas, documentación. La exigencia profesional no cambia: **criterio**, **verificación** y **ética** en el uso de datos.</p>
+        <p>Hoy la colaboración <span class="kw">IA–Humano</span> (por ejemplo, asistentes tipo ChatGPT integrados en el flujo) acelera tareas: especificaciones, pruebas, documentación. La exigencia profesional no cambia: <b>criterio</b>, <b>verificación</b> y <b>ética</b> en el uso de datos.</p>
 
         <!-- BLOQUE E · Pista para la lectura -->
-        <p>Consejo didáctico: usa los botones **Pausa/Seguir** y **Más lento/Más rápido** abajo para ajustar el ritmo de lectura del texto sobre el vídeo.</p>
-
+   
       </div>
     </div>
   </section>
@@ -122,24 +142,41 @@
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     let player, animRunning = true;
+
+    /* La API de IFrame creará el iframe dentro de #player */
     function onYouTubeIframeAPIReady(){
       player = new YT.Player('player', {
         videoId: 'YnnGbcM-H8c', // demostración de keypunch IBM
-        playerVars: {autoplay:1, controls:0, modestbranding:1, loop:1, playlist:'YnnGbcM-H8c', mute:1, playsinline:1},
-        events: { onReady: e => e.target.playVideo() }
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          modestbranding: 1,
+          loop: 1,
+          playlist: 'YnnGbcM-H8c',
+          mute: 1,           // necesario para autoplay sin interacción
+          playsinline: 1
+        },
+        events: {
+          onReady: e => {
+            // doble seguridad para autoplay en móviles
+            try { e.target.mute(); } catch(_) {}
+            e.target.playVideo();
+          }
+        }
       });
     }
 
     // === Controles de lectura ===
     const crawlEl = document.getElementById('crawl');
-    const root = document.documentElement.style;
+    const rootStyle = document.documentElement.style;
     const btnSlower = document.getElementById('slower');
     const btnFaster = document.getElementById('faster');
     const btnPause  = document.getElementById('pause');
     const btnPlay   = document.getElementById('play');
 
-    const getDuration = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration')) || 95;
-    const setDuration = (s) => root.setProperty('--duration', s + 's');
+    const getDuration = () =>
+      parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration')) || 95;
+    const setDuration = (s) => rootStyle.setProperty('--duration', s + 's');
 
     btnSlower.addEventListener('click', () => setDuration(Math.min(getDuration() + 15, 240)));
     btnFaster.addEventListener('click', () => setDuration(Math.max(getDuration() - 15, 30)));

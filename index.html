@@ -1,57 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DAW1 · IES Camas 25/26 · Intro</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
-  /* ===== Reset básico para fondo negro y altura completa ===== */
-  html, body { height: 100%; background:#000; margin:0; }
-
-  /* ===== Fondo vídeo ===== */
-  #player{
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;           /* antes: -1 (no se veía) */
-    pointer-events: none; /* que no capture clics */
-  }
-  /* Fuerza el iframe generado por la API a ocupar todo */
-  #player iframe{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    pointer-events:none;
-  }
-
-  /* ===== Tipografías de énfasis ===== */
-  @font-face{font-family:"JetMono"; src: local("JetBrains Mono"), local("JetBrainsMono");}
-  @font-face{font-family:"Inter"; src: local("Inter");}
-
+  /* ===== Base ===== */
+  html, body { height: 100%; background:#000; }
   :root{
-    --duration: 95s;         /* velocidad inicial del crawl (más alta = más lento) */
+    --duration: 95s; /* más alto = más lento */
     --size: clamp(1.05rem, 2.4vw, 2rem);
-    --yellow: #ffeb3b;
-    --blue:   #80d8ff;
-    --green:  #b2ff59;
-    --pink:   #ff80ab;
-    --orange: #ffcc80;
-    --kw-font: "JetMono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --body-font: "Inter", system-ui, Arial, sans-serif;
+    --yellow: #ffeb3b; --blue:#80d8ff; --green:#b2ff59; --pink:#ff80ab; --orange:#ffcc80;
+    --kw-font: ui-monospace, SFMono-Regular, Menlo, Consolas, "JetBrains Mono", monospace;
+    --body-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  body{ font-family: var(--body-font); overflow:hidden; }
+
+  /* ===== Capas de fondo ===== */
+  .media-layer{ position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events:none; }
+  #bg-image{
+    background: url("https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/LCM_-_IBM_029_Card_Punch_01.jpg/1920px-LCM_-_IBM_029_Card_Punch_01.jpg?20140404233459")
+                center center / cover no-repeat;
+    filter: brightness(0.9);
+  }
+  #bg-video{ display:none; }
+  #bg-video iframe{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit: cover; pointer-events:none;
   }
 
-  /* ===== Cinta Star Wars ===== */
+  /* ===== Controles (arriba) ===== */
+  .top-ui{
+    position: fixed; left: 0; right: 0; top: .75rem; z-index: 3;
+    display:flex; justify-content:center;
+  }
+  .top-ui .card{
+    background: #000000b0; color:#fff; backdrop-filter: blur(6px);
+    border: 1px solid #ffffff33;
+  }
+  .btn-white{
+    background:#ffffffcc; border:0; color:#000; font-weight:700;
+  }
+
+  /* ===== Distintivo ===== */
+  .badge-top{
+    position: fixed; right: .75rem; top: .75rem; z-index: 3;
+    background:#000000b0; color:#fff; padding:.35rem .6rem; border-radius:.5rem; font-size:.9rem;
+    border:1px solid #ffffff33;
+  }
+
+  /* ===== Texto estilo Star Wars ===== */
   .star-wars{
-    position:absolute; inset:0; overflow:hidden;
-    perspective: 700px;
+    position:absolute; inset:0; overflow:hidden; z-index: 1;
     color: var(--yellow);
     text-shadow: 2px 2px 8px #000;
-    font-family: var(--body-font);
+    perspective: 700px;
     line-height: 1.6;
-    z-index: 1; /* por encima del vídeo */
-    pointer-events:none; /* para que los controles sigan clicables */
+    pointer-events:none;
   }
   .crawl{
     position:relative; top:100%;
@@ -63,137 +72,162 @@
     100% { top:-1200%; transform: rotateX(24deg) translateZ(-2100px); }
   }
   .content{
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 0 1rem;
-    font-size: var(--size);
-    font-weight: 700;
+    max-width: 1000px; margin: 0 auto; text-align: center; padding: 0 1rem;
+    font-size: var(--size); font-weight: 700;
   }
-  .content p{margin: .9rem 0;}
+  .content p{ margin: .9rem 0; }
+  .kw{ color: var(--yellow); font-family: var(--kw-font); }
+  .it{ color: var(--blue);   font-family: var(--kw-font); }
+  .ot{ color: var(--green);  font-family: var(--kw-font); }
+  .tool{color: var(--pink);  font-family: var(--kw-font); }
+  .hist{color: var(--orange);font-family: var(--kw-font); }
 
-  /* ===== Palabras clave (color + fuente) ===== */
-  .kw   { color: var(--yellow); font-family: var(--kw-font); }
-  .it   { color: var(--blue);   font-family: var(--kw-font); }
-  .ot   { color: var(--green);  font-family: var(--kw-font); }
-  .tool { color: var(--pink);   font-family: var(--kw-font); }
-  .hist { color: var(--orange); font-family: var(--kw-font); }
-
-  /* ===== Controles accesibles ===== */
-  .controls{
-    position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%);
-    display: flex; gap: .5rem; z-index: 2; flex-wrap: wrap; /* sobre el texto */
+  /* ===== Referencias (pie) ===== */
+  footer.refs{
+    position: fixed; left: .75rem; right: .75rem; bottom: .75rem; z-index: 2;
+    display: flex; justify-content: center;
+    pointer-events:auto;
   }
-  .controls button{
-    border: 0; padding: .55rem .8rem; border-radius: .7rem; cursor: pointer;
-    background: #ffffffcc; backdrop-filter: blur(4px);
-    font-weight: 700;
+  .refs .card{
+    background:#000000b0; color:#fff; border:1px solid #ffffff33;
   }
-  .badge{
-    position: fixed; right: 1rem; top: 1rem; z-index: 2;
-    background:#000000b0; color:#fff; padding:.35rem .6rem; border-radius:.5rem; font-size:.9rem;
-  }
+  .refs a{ color:#fff; text-decoration: underline; }
 </style>
 </head>
 <body>
-  <!-- Fondo con vídeo de YouTube (silenciado para permitir autoplay) -->
-  <div id="player"></div>
 
-  <!-- Distintivo -->
-  <div class="badge">IES Camas · DAW1 · 2025/26 · Ñ</div>
+  <!-- Fondo: Imagen SIEMPRE visible -->
+  <div id="bg-image" class="media-layer" aria-hidden="true"></div>
 
-  <!-- Controles pedagógicos -->
-  <div class="controls" aria-label="Controles de lectura">
-    <button id="slower">⏪ Más lento</button>
-    <button id="pause">⏸️ Pausa</button>
-    <button id="play" disabled>▶️ Seguir</button>
-    <button id="faster">⏩ Más rápido</button>
+  <!-- Fondo: Vídeo (solo cuando slider=2) -->
+  <div id="bg-video" class="media-layer" aria-hidden="true">
+    <iframe
+      id="yt-video"
+      src="https://www.youtube.com/embed/YnnGbcM-H8c?autoplay=1&mute=1&loop=1&playlist=YnnGbcM-H8c&controls=0&modestbranding=1&playsinline=1"
+      title="IBM 029 Keypunch"
+      frameborder="0"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
   </div>
 
-  <!-- Cinta de texto -->
+  <!-- Distintivo -->
+  <div class="badge-top">IES Camas · DAW1 · 2025/26 · Ñ</div>
+
+  <!-- UI superior (Bootstrap) -->
+  <div class="top-ui">
+    <div class="card shadow-sm">
+      <div class="card-body py-2 px-3">
+        <div class="row g-3 align-items-center">
+          <!-- Botones -->
+          <div class="col-auto">
+            <div class="btn-group" role="group" aria-label="Controles de lectura">
+              <button id="slower" type="button" class="btn btn-white">⏪ Más lento</button>
+              <button id="pause"  type="button" class="btn btn-white">⏸️ Pausa</button>
+              <button id="play"   type="button" class="btn btn-white" disabled>▶️ Seguir</button>
+              <button id="faster" type="button" class="btn btn-white">⏩ Más rápido</button>
+            </div>
+          </div>
+          <!-- Slider Imagen/Vídeo -->
+          <div class="col-auto">
+            <label for="bg-slider" class="form-label mb-0">Fondo:</label>
+          </div>
+          <div class="col-auto">
+            <input type="range" class="form-range" min="1" max="2" step="1" value="1" id="bg-slider" style="width:160px;">
+            <div class="d-flex justify-content-between small text-white-50">
+              <span>1 · Imagen</span><span>2 · Vídeo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Texto “Star Wars” -->
   <section class="star-wars" aria-label="Historia técnica y conexión con los módulos">
     <div class="crawl" id="crawl">
       <div class="content">
-   <p>  <mark>Consejo didáctico: usa los botones <b>Pausa/Seguir</b> y <b>Más lento/Más rápido</b> abajo para ajustar el ritmo de lectura del texto sobre el vídeo.</mark></p>
-<br><br>
-        <!-- BLOQUE A · La máquina del vídeo (dato técnico veraz) -->
-        <p>Lo que se observa en el vídeo es una <span class="hist">perforadora IBM Type 029</span> (familia de los años 60), sucesora de la 026. Su función es <b>capturar datos</b> en <span class="hist">tarjetas perforadas</span> estándar de <b>80 columnas</b> (formato IBM de 1928) mediante teclado mecánico.</p>
-        <p>Cada <span class="hist">columna</span> de la tarjeta representa <b>un carácter</b>. La perforación se hace en <b>filas</b> numeradas (12, 11, 0–9) con combinaciones que codifican letras, cifras y signos (códigos Hollerith/BCD, antecesores de <span class="kw">EBCDIC</span>). La 029 <b>imprime la leyenda</b> sobre la tarjeta para verificación humana y puede trabajar con flujos de tarjetas a <b>decenas por minuto</b> según destreza de la operadora.</p>
-        <p>El ciclo de trabajo clásico era: <span class="tool">029 (entrada)</span> → <span class="tool">verificadora 059</span> → <span class="tool">lector</span> → <span class="tool">tabulador/ordenador</span>. El soporte físico limita la <b>capacidad</b> (≈80 caracteres por tarjeta) y exige <b>precisión</b> y <b>procedimiento</b>. Estos principios siguen vigentes en la ingeniería de software moderna.</p>
-
-        <!-- BLOQUE B · Conexión con Digitalización (MP 1665) -->
-        <p>En <span class="kw">digitalización</span>, pasamos de soportes físicos a <b>datos conectados</b>. Separar los ámbitos <span class="it">IT</span> (aplicaciones, datos, ciberseguridad) y <span class="ot">OT</span> (máquinas, sensores, PLC) nos permite diseñar soluciones que integran planta y negocio con <span class="tool">APIs</span>, <span class="tool">mensajería</span> y <span class="tool">ETL</span>.</p>
-        <p>Una cadena moderna sustituye las tarjetas por <span class="kw">streams de eventos</span>, almacenes <span class="tool">BBDD</span>/<span class="tool">Data Lake</span> y análisis con <span class="kw">IA</span>. Resultado: <b>trazabilidad</b>, <b>decisiones con datos</b> y <b>eficiencia</b>.</p>
-
-        <!-- BLOQUE C · Entornos de Desarrollo (MP 0487) -->
-        <p>De la 029 aprendemos <b>flujo y control de calidad</b>. En software: <span class="tool">Git</span> (versionado), <span class="tool">Maven/Gradle</span> (build), <span class="tool">JUnit</span> (pruebas), <span class="tool">CI/CD</span> (automatización) y <span class="tool">Docker</span> (entornos reproducibles). El código transita de <span class="kw">fuente</span> a <span class="kw">objeto</span> y <span class="kw">ejecutable</span> o <span class="kw">bytecode</span> (JVM/.NET).</p>
-        <p>La comparación justa: una tarjeta (80 car.) vs. una solicitud moderna a una <span class="tool">API REST</span> con <span class="kw">JSON</span> de kilobytes, procesada en milisegundos y persistida con garantías ACID o eventos idempotentes. Mismo objetivo: <b>datos correctos</b> en el <b>lugar correcto</b>.</p>
-
-        <!-- BLOQUE D · IA–Humano y oficio -->
-        <p>Hoy la colaboración <span class="kw">IA–Humano</span> (por ejemplo, asistentes tipo ChatGPT integrados en el flujo) acelera tareas: especificaciones, pruebas, documentación. La exigencia profesional no cambia: <b>criterio</b>, <b>verificación</b> y <b>ética</b> en el uso de datos.</p>
-
-        <!-- BLOQUE E · Pista para la lectura -->
-   
+        <p><mark>Consejo: usa <b>Pausa/Seguir</b> y <b>Más lento/Más rápido</b> para ajustar la lectura.</mark></p>
+        <br><br>
+        <p>Lo que se observa de fondo es una <span class="hist">perforadora IBM Type 029</span> (años 60). Captura datos en <span class="hist">tarjetas perforadas</span> de <b>80 columnas</b> mediante teclado mecánico.</p>
+        <p>Cada <span class="hist">columna</span> representa <b>un carácter</b>. Se perfora en <b>filas</b> numeradas (12, 11, 0–9) con combinaciones que codifican letras, cifras y signos. La 029 <b>imprime la leyenda</b> y procesa <b>decenas por minuto</b>.</p>
+        <p>En <span class="kw">digitalización</span>, pasamos a <b>datos conectados</b>. Separar <span class="it">IT</span> y <span class="ot">OT</span> facilita integrar planta y negocio con <span class="tool">APIs</span>, <span class="tool">mensajería</span> y <span class="tool">ETL</span>.</p>
+        <p>De la 029 aprendemos <b>flujo</b> y <b>control de calidad</b>. En software: <span class="tool">Git</span>, <span class="tool">Maven</span>, <span class="tool">JUnit</span>, <span class="tool">CI/CD</span>, <span class="tool">Docker</span>.</p>
+        <p>Hoy la colaboración <span class="kw">IA–Humano</span> acelera tareas: especificaciones, pruebas, documentación. La exigencia profesional: <b>criterio</b>, <b>verificación</b> y <b>ética</b>.</p>
       </div>
     </div>
   </section>
 
-  <!-- API de YouTube -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <script>
-    let player, animRunning = true;
+  <!-- Referencias (APA 7ª) -->
+  <footer class="refs" aria-labelledby="refs-title">
+    <div class="card shadow-sm">
+      <div class="card-body py-2 px-3">
+        <h2 id="refs-title" class="h6 mb-2">Referencias (APA 7ª)</h2>
+        <p class="mb-1">
+          CuriousMarc. (s. f.). <i>1964 IBM 029 keypunch card punching demonstration</i> [Video]. YouTube.
+          <a href="https://www.youtube.com/watch?v=YnnGbcM-H8c" target="_blank" rel="noopener">https://www.youtube.com/watch?v=YnnGbcM-H8c</a>
+        </p>
+        <p class="mb-0">
+          Mabel, J. (2014). <i>IBM 029 card punch (Living Computer Museum)</i> [Fotografía]. Wikimedia Commons.
+          <a href="https://commons.wikimedia.org/wiki/File:LCM_-_IBM_029_Card_Punch_01.jpg" target="_blank" rel="noopener">https://commons.wikimedia.org/wiki/File:LCM_-_IBM_029_Card_Punch_01.jpg</a>
+        </p>
+      </div>
+    </div>
+  </footer>
 
-    /* La API de IFrame creará el iframe dentro de #player */
-    function onYouTubeIframeAPIReady(){
-      player = new YT.Player('player', {
-        videoId: 'YnnGbcM-H8c', // demostración de keypunch IBM
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          modestbranding: 1,
-          loop: 1,
-          playlist: 'YnnGbcM-H8c',
-          mute: 1,           // necesario para autoplay sin interacción
-          playsinline: 1
-        },
-        events: {
-          onReady: e => {
-            // doble seguridad para autoplay en móviles
-            try { e.target.mute(); } catch(_) {}
-            e.target.playVideo();
-          }
-        }
-      });
+<!-- Bootstrap JS (opcional, por si luego amplías componentes) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ===== Slider Imagen/Vídeo =====
+  const slider   = document.getElementById('bg-slider');
+  const bgImg    = document.getElementById('bg-image');
+  const bgVideo  = document.getElementById('bg-video');
+
+  function applyBackgroundMode(){
+    const mode = slider.value; // "1" imagen, "2" vídeo
+    if(mode === "2"){
+      bgVideo.style.display = 'block';   // mostramos vídeo
+      // la imagen permanece detrás (si el vídeo no carga, seguirá viéndose la imagen)
+    } else {
+      bgVideo.style.display = 'none';    // ocultamos vídeo
     }
+  }
+  slider.addEventListener('input', applyBackgroundMode);
+  applyBackgroundMode(); // estado inicial
 
-    // === Controles de lectura ===
-    const crawlEl = document.getElementById('crawl');
-    const rootStyle = document.documentElement.style;
-    const btnSlower = document.getElementById('slower');
-    const btnFaster = document.getElementById('faster');
-    const btnPause  = document.getElementById('pause');
-    const btnPlay   = document.getElementById('play');
+  // ===== Controles de animación del crawl =====
+  const crawlEl   = document.getElementById('crawl');
+  const rootStyle = document.documentElement.style;
+  const btnSlower = document.getElementById('slower');
+  const btnFaster = document.getElementById('faster');
+  const btnPause  = document.getElementById('pause');
+  const btnPlay   = document.getElementById('play');
+  let animRunning = true;
 
-    const getDuration = () =>
-      parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration')) || 95;
-    const setDuration = (s) => rootStyle.setProperty('--duration', s + 's');
+  const getDuration = () =>
+    parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--duration')) || 95;
+  const setDuration = (s) => rootStyle.setProperty('--duration', s + 's');
 
-    btnSlower.addEventListener('click', () => setDuration(Math.min(getDuration() + 15, 240)));
-    btnFaster.addEventListener('click', () => setDuration(Math.max(getDuration() - 15, 30)));
-    btnPause.addEventListener('click', () => {
-      crawlEl.style.animationPlayState = 'paused';
-      animRunning = false; btnPause.disabled = true; btnPlay.disabled = false;
-    });
-    btnPlay.addEventListener('click', () => {
-      crawlEl.style.animationPlayState = 'running';
-      animRunning = true; btnPlay.disabled = true; btnPause.disabled = false;
-    });
-    document.addEventListener('keydown', (e)=>{
-      if(e.code === 'Space'){
-        e.preventDefault();
-        (animRunning ? btnPause : btnPlay).click();
-      }
-    });
-  </script>
+  btnSlower.addEventListener('click', () => setDuration(Math.min(getDuration() + 15, 240)));
+  btnFaster.addEventListener('click', () => setDuration(Math.max(getDuration() - 15, 30)));
+
+  btnPause.addEventListener('click', () => {
+    crawlEl.style.animationPlayState = 'paused';
+    animRunning = false; btnPause.disabled = true; btnPlay.disabled = false;
+  });
+  btnPlay.addEventListener('click', () => {
+    crawlEl.style.animationPlayState = 'running';
+    animRunning = true; btnPlay.disabled = true; btnPause.disabled = false;
+  });
+
+  // Tecla espacio: pausa/segir
+  document.addEventListener('keydown', (e)=>{
+    if(e.code === 'Space'){
+      e.preventDefault();
+      (animRunning ? btnPause : btnPlay).click();
+    }
+  });
+</script>
 </body>
 </html>
